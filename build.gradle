@@ -1,0 +1,36 @@
+plugins {
+  id 'com.gradle.plugin-publish' version '0.9.9'
+}
+
+version '0.0.1-SNAPSHOT'
+group 'net.upeuker'
+
+apply plugin: 'groovy'
+apply plugin: 'maven'
+
+sourceCompatibility = 1.8
+compileGroovy.options.encoding = 'UTF-8'
+compileJava.options.encoding = 'UTF-8'
+
+repositories {
+  mavenCentral()
+  mavenLocal()
+}
+
+dependencies {
+  compile gradleApi()
+  testCompile 'junit:junit:4.12'
+}
+
+pluginBundle {
+  website = 'https://github.com/upeuker/net.upeuker.gradle.nerzit'
+  vcsUrl = 'https://github.com/upeuker/net.upeuker.gradle.nerzit'
+  plugins {
+    nerzswePlugin {
+      id = 'net.upeuker.gradle.nerzit'
+      displayName = 'NERZ-IT-Plugin'
+      description = 'Plugin to handle NERZ-SWE integration tests'
+      tags = ['individual', 'build', 'NERZ', 'plugin', 'test']
+    }
+  }
+}

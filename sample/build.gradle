@@ -1,0 +1,42 @@
+apply plugin: "java"
+  repositories {
+    maven {
+        url "http://h2727649.stratoserver.net:8081/repository/nerz-maven-public/"
+    }
+}
+
+configurations {
+    swe
+}
+
+dependencies {
+    swe 'de.bsvrz.ibv:de.bsvrz.ibv.simbaustelle:2.0.0:distributionspaket@zip'
+    swe 'de.bsvrz.dav:de.bsvrz.dav.daf:3.9.7:distributionspaket@zip'
+}
+
+task loadSwePaket(type: Copy) {
+
+    from configurations.swe
+    into "$buildDir/swe"
+}
+
+task deleteSwePakete(type: Delete) {
+
+      FileTree tree = fileTree(dir: "$buildDir/swe")
+      tree.include '**.zip'
+      delete = tree
+}
+
+task installSwe(dependsOn: loadSwePaket, type: Copy) {
+
+    loadSwePaket.eachFile {
+
+      def swePaket = "$buildDir/swe/" + it.file.name
+      def zipFile = file(swePaket)
+
+      from zipTree(zipFile)
+      into "$buildDir/swe"
+    }
+
+    finalizedBy deleteSwePakete
+}
